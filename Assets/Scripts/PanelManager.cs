@@ -24,6 +24,7 @@ public class PanelManager : MonoBehaviour
         private HashSet<float> timeRewardsGiven = new HashSet<float>();
         private HashSet<int> viewCountRewardsGiven = new HashSet<int>();
 
+
         public void Initialize()
         {
             if (videoPlayer != null)
@@ -46,7 +47,8 @@ public class PanelManager : MonoBehaviour
                 {
                     timeRewardsGiven.Add(threshold);
                     Debug.Log($"{panelName}: Earned reward for {threshold} seconds watched!");
-                    //TODO: Reward Logic
+                    string rewardName = $"{panelName}_Time_{threshold}s";
+                    InventoryManager.Instance.UnlockItem(rewardName);
                 }
             }
 
@@ -56,7 +58,8 @@ public class PanelManager : MonoBehaviour
                 {
                     viewCountRewardsGiven.Add(threshold);
                     Debug.Log($"{panelName}: Earned reward for {threshold} views!");
-                    //TODO: Reward Logic
+                    string rewardName = $"{panelName}_Views_{threshold}";
+                    InventoryManager.Instance.UnlockItem(rewardName);
                 }
             }
         }
@@ -68,6 +71,8 @@ public class PanelManager : MonoBehaviour
     public GameObject characterPanel;
     public GameObject statsPanel;
     public TextMeshProUGUI statsText;
+
+    public GameObject inventoryPanel;
     void Start()
     {
         panelDict = new Dictionary<string, PanelEntry>();
@@ -154,5 +159,15 @@ public class PanelManager : MonoBehaviour
             statsText.text += "\n";
         }
     }
+
+
+
+    public void OpenInventory()
+    {
+        if (inventoryPanel.activeSelf)
+            inventoryPanel.SetActive(false);
+        else inventoryPanel.SetActive(true);
+    }
+
 
 }
