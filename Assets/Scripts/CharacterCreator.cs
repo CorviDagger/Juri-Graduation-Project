@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class CharacterCreator : MonoBehaviour
 {
-
+    [Header("Character Customization")]
     public SpriteRenderer bodyPart;
-
     public List<Sprite> options = new List<Sprite>();
-
-
     private int currentOption = 0;
+
+    [Header("Item Selection")]
+    public SpriteRenderer displayItemSlot;
+    public List<InventoryManager.InventoryItem> ownedItems = new List<InventoryManager.InventoryItem>();
+    private int currentItem = 0;
+
+
     public void NextOption()
     {
         currentOption++;
@@ -20,4 +24,40 @@ public class CharacterCreator : MonoBehaviour
         }
         bodyPart.sprite = options[currentOption];
     }
+
+    public void NextDisplayItem()
+    {
+        if(ownedItems.Count == 0)
+        {
+            displayItemSlot.sprite = null;
+            return;
+        }
+        currentItem = (currentItem + 1) % ownedItems.Count;
+        UpdateDisplayItem();
+    }
+
+    public void SetInventoryItem(List<InventoryManager.InventoryItem> itemSprites)
+    {
+        ownedItems = new List<InventoryManager.InventoryItem>();
+        ownedItems.Add(new InventoryManager.InventoryItem("None", null));
+        ownedItems.AddRange(itemSprites);
+        currentItem = 0;
+        UpdateDisplayItem();
+    }
+
+    private void Start()
+    {
+        SetInventoryItem(InventoryManager.Instance.inventoryItems);
+    }
+
+    private void UpdateDisplayItem()
+    {
+        if (ownedItems.Count == 0)
+        {
+            displayItemSlot.sprite = null;
+            return;
+        }
+            displayItemSlot.sprite = ownedItems[currentItem].icon;
+    }
+
 }

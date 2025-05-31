@@ -13,6 +13,7 @@ public class PanelManager : MonoBehaviour
         public string panelName;
         public GameObject panelObject;
         public UnityEngine.Video.VideoPlayer videoPlayer;
+        public string artistName;
 
         public List<float> timeThresholds = new List<float>();
         public List<int> viewCountThresholds = new List<int>();
@@ -23,7 +24,9 @@ public class PanelManager : MonoBehaviour
 
         private HashSet<float> timeRewardsGiven = new HashSet<float>();
         private HashSet<int> viewCountRewardsGiven = new HashSet<int>();
+        public List<RewardEntry> rewardEntries = new List<RewardEntry>();
 
+        public PanelManager panelManager;
 
         public void Initialize()
         {
@@ -37,30 +40,44 @@ public class PanelManager : MonoBehaviour
         {
             timesWatched++;
             Debug.Log($"'{panelName}' video completed. Watched {timesWatched} times.");
+            panelManager.IncrementArtistViewCount(artistName);
         }
 
-        public void CheckRewards()
+        public void CheckRewards(Dictionary<string, float> artistViewTimes)
         {
-            foreach (var threshold in timeThresholds)
+            foreach (var reward in rewardEntries)
             {
-                if (viewTime >= threshold && !timeRewardsGiven.Contains(threshold))
-                {
-                    timeRewardsGiven.Add(threshold);
-                    Debug.Log($"{panelName}: Earned reward for {threshold} seconds watched!");
-                    string rewardName = $"{panelName}_Time_{threshold}s";
-                    InventoryManager.Instance.UnlockItem(rewardName);
-                }
-            }
+                if (reward.panelName != panelName) continue;
 
-            foreach (var threshold in viewCountThresholds)
-            {
-                if (timesWatched >= threshold && !viewCountRewardsGiven.Contains(threshold))
+                if (reward.type == RewardEntry.RewardType.Time && artistName == reward.artistName && artistViewTimes.TryGetValue(artistName, out float artistTime) && artistTime >= reward.thresholdTime && !timeRewardsGiven.Contains(reward.thresholdTime))
                 {
-                    viewCountRewardsGiven.Add(threshold);
-                    Debug.Log($"{panelName}: Earned reward for {threshold} views!");
-                    string rewardName = $"{panelName}_Views_{threshold}";
-                    InventoryManager.Instance.UnlockItem(rewardName);
+                    timeRewardsGiven.Add(reward.thresholdTime);
+                    InventoryManager.Instance.UnlockItem(reward.itemToUnlock);
+                    Debug.Log($"{panelName}: Unlocked {reward.itemToUnlock}");
                 }
+                if (reward.type == RewardEntry.RewardType.ViewCount && reward.panelName == panelName && timesWatched >= reward.thresholdCount && !viewCountRewardsGiven.Contains(reward.thresholdCount))
+                {
+                    viewCountRewardsGiven.Add(reward.thresholdCount);
+                    InventoryManager.Instance.UnlockItem(reward.itemToUnlock);
+                    Debug.Log($"{panelName}: Unlocked {reward.itemToUnlock}");
+                }
+            //    {
+            //        timeRewardsGiven.Add(threshold);
+            //        Debug.Log($"{panelName}: Earned reward for {threshold} seconds watched!");
+            //        string rewardName = $"{panelName}_Time_{threshold}s";
+            //        InventoryManager.Instance.UnlockItem(rewardName);
+            //    }
+            //}
+
+            //foreach (var threshold in viewCountThresholds)
+            //{
+            //    if (timesWatched >= threshold && !viewCountRewardsGiven.Contains(threshold))
+            //    {
+            //        viewCountRewardsGiven.Add(threshold);
+            //        Debug.Log($"{panelName}: Earned reward for {threshold} views!");
+            //        string rewardName = $"{panelName}_Views_{threshold}";
+            //        InventoryManager.Instance.UnlockItem(rewardName);
+            //    }
             }
         }
     }
@@ -73,6 +90,13 @@ public class PanelManager : MonoBehaviour
     public TextMeshProUGUI statsText;
 
     public GameObject inventoryPanel;
+
+    private Dictionary<string, float> artistViewTimes = new Dictionary<string, float>();
+    private Dictionary<string, int> artistViewCounts = new Dictionary<string, int>();
+
+    private HashSet<string> givenRewards = new HashSet<string>();
+    public List<RewardEntry> rewardEntries;
+
     void Start()
     {
         panelDict = new Dictionary<string, PanelEntry>();
@@ -91,8 +115,56 @@ public class PanelManager : MonoBehaviour
             if (entry.isActive)
             {
                 entry.viewTime += Time.deltaTime;
-                entry.CheckRewards();
+                if (!artistViewTimes.ContainsKey(entry.artistName))
+                {
+                    artistViewTimes[entry.artistName] = 0f;
+                }
+                artistViewTimes[entry.artistName] += Time.deltaTime;
+                CheckArtistRewards(entry.artistName);
             }
+        }
+    }
+
+    public void CheckArtistRewards(string artistName)
+    {
+        foreach(var reward in rewardEntries)
+        {
+            if(reward.artistName != artistName)
+            {
+                continue;
+            }
+            string rewardKey = $"{artistName}_{reward.itemToUnlock}";
+            if (givenRewards.Contains(rewardKey))
+            {
+                continue;
+            }
+            bool rewardGranted = false;
+            if(reward.type == RewardEntry.RewardType.Time && artistViewTimes.TryGetValue(artistName, out float time) && time >= reward.thresholdTime)
+            {
+                rewardGranted = true;
+            }
+            else if (reward.type == RewardEntry.RewardType.ViewCount && artistViewCounts.TryGetValue(artistName, out int views) && views >= reward.thresholdCount)
+            {
+                rewardGranted = true;
+            }
+            if (rewardGranted)
+            {
+                givenRewards.Add(rewardKey);
+                InventoryManager.Instance.UnlockItem(reward.itemToUnlock);
+                Debug.Log($"{ artistName}: Unlocked { reward.itemToUnlock}");
+            }
+        }
+    }
+
+    public void IncrementArtistViewCount(string artistName)
+    {
+        if (artistViewCounts.ContainsKey(artistName))
+        {
+            artistViewCounts[artistName]++;
+        }
+        else
+        {
+            artistViewCounts[artistName] = 1;
         }
     }
 
@@ -120,6 +192,15 @@ public class PanelManager : MonoBehaviour
         if(panelDict.TryGetValue(panelName, out var entry))
         {
             return entry.viewTime;
+        }
+        return 0f;
+    }
+
+    public float GetArtistViewTime(string artistName)
+    {
+        if(artistViewTimes.TryGetValue(artistName, out float time))
+        {
+            return time;
         }
         return 0f;
     }
@@ -158,6 +239,10 @@ public class PanelManager : MonoBehaviour
             }
             statsText.text += "\n";
         }
+        foreach (var kvp in artistViewTimes)
+        {
+            statsText.text += $"{kvp.Key} total view time: {kvp.Value:F1} seconds\n";
+        }
     }
 
 
@@ -168,6 +253,20 @@ public class PanelManager : MonoBehaviour
             inventoryPanel.SetActive(false);
         else inventoryPanel.SetActive(true);
     }
+
+    [System.Serializable]
+    public class RewardEntry
+    {
+        public string panelName;
+        public enum RewardType {  Time, ViewCount }
+        public RewardType type;
+        public float thresholdTime;
+        public int thresholdCount;
+        public string itemToUnlock;
+        public string artistName;
+    }
+    
+
 
 
 }
