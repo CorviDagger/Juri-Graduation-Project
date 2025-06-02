@@ -878,7 +878,7 @@ MonoBehaviour:
     type: 1
     thresholdTime: 5
     thresholdCount: 1
-    itemToUnlock: bard
+    itemToUnlock: doom
     artistName: Walker
   - panelName: 
     type: 1
@@ -6245,6 +6245,10 @@ MonoBehaviour:
     icon: {fileID: -6497672087277347574, guid: 5fc977c434532024ea1e383c3c69dfac, type: 3}
   - itemName: bard
     icon: {fileID: 7468356559241021412, guid: c8d5c2ef96aa7454bad763b1a9ffa95d, type: 3}
+  - itemName: doom
+    icon: {fileID: 661674699086332256, guid: 3915c403f891ba74d8144242dd9d9ed7, type: 3}
+  - itemName: goblin
+    icon: {fileID: 2811395397777646438, guid: 82b66eb3881cdcc43b2f1d9cd0892017, type: 3}
 --- !u!4 &1323243317
 Transform:
   m_ObjectHideFlags: 0
