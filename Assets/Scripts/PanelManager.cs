@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class PanelManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PanelManager : MonoBehaviour
         public GameObject panelObject;
         public UnityEngine.Video.VideoPlayer videoPlayer;
         public string artistName;
+        public RawImage videoDisplay;
 
         public List<float> timeThresholds = new List<float>();
         public List<int> viewCountThresholds = new List<int>();
@@ -90,6 +92,7 @@ public class PanelManager : MonoBehaviour
     public TextMeshProUGUI statsText;
 
     public GameObject inventoryPanel;
+    public GameObject notificationSprite;
 
     private Dictionary<string, float> artistViewTimes = new Dictionary<string, float>();
     private Dictionary<string, int> artistViewCounts = new Dictionary<string, int>();
@@ -152,6 +155,7 @@ public class PanelManager : MonoBehaviour
                 givenRewards.Add(rewardKey);
                 InventoryManager.Instance.UnlockItem(reward.itemToUnlock);
                 Debug.Log($"{ artistName}: Unlocked { reward.itemToUnlock}");
+                EnableNotification();
             }
         }
     }
@@ -175,6 +179,14 @@ public class PanelManager : MonoBehaviour
             bool shouldBeActive = entry.panelName == name;
             entry.panelObject.SetActive(shouldBeActive);
             entry.isActive = shouldBeActive;
+            if(entry.videoPlayer != null)
+            {
+                if (shouldBeActive)
+                {
+                    entry.videoDisplay.enabled = true;
+                    entry.videoPlayer.Play();
+                }
+            }
         }
     }
 
@@ -184,6 +196,11 @@ public class PanelManager : MonoBehaviour
         {
             entry.panelObject.SetActive(false);
             entry.isActive = false;
+            if(entry.videoPlayer != null)
+            {
+                entry.videoPlayer.Pause();
+                entry.videoDisplay.enabled = false;
+            }
         }
     }
 
@@ -225,6 +242,7 @@ public class PanelManager : MonoBehaviour
     public void CloseCharacterPanel()
     {
         characterPanel.SetActive(false);
+        inventoryPanel.SetActive(false);
     }
 
     private void UpdateStatsText()
@@ -245,13 +263,25 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    public void EnableNotification()
+    {
+        notificationSprite.SetActive(true);
+    }
+
+
 
 
     public void OpenInventory()
     {
         if (inventoryPanel.activeSelf)
+        {
             inventoryPanel.SetActive(false);
-        else inventoryPanel.SetActive(true);
+        }
+        else 
+        { 
+            inventoryPanel.SetActive(true);
+            notificationSprite.SetActive(false);
+        }
     }
 
     [System.Serializable]
