@@ -143,7 +143,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      DNDDakkaDakka_0: 2811395397777646438
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

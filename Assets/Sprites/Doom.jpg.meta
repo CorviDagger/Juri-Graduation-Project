@@ -143,7 +143,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Doom_0: 661674699086332256
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fcb8f151b7dd169449a4e5e9f2da533c
+guid: 397467b41670c2f459b7474a4bbeb568
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3856814172139256800
-    second: Hair3_0
+      213: 734303209027261449
+    second: Trophy1st_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,30 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hair3_0
+      name: Trophy1st_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 119
-        width: 237
-        height: 127
+        x: 82
+        y: 39
+        width: 347
+        height: 360
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0eb7d072e08268530800000000000000
-      internalID: 3856814172139256800
+      spriteID: 904df7bc0e4c03a00800000000000000
+      internalID: 734303209027261449
       vertices: []
       indices: 
       edges: []
@@ -143,8 +130,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      Hair3_0: 3856814172139256800
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

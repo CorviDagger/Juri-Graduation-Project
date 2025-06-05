@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fcb8f151b7dd169449a4e5e9f2da533c
+guid: 78c5627b4dee46c47adda85b98b3c72c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3856814172139256800
-    second: Hair3_0
+      213: -7888902146871769836
+    second: Dave_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,39 +96,26 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hair3_0
+      name: Dave_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 119
-        width: 237
-        height: 127
+        x: 3
+        y: 0
+        width: 497
+        height: 498
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0eb7d072e08268530800000000000000
-      internalID: 3856814172139256800
+      spriteID: 41544eb6b4df48290800000000000000
+      internalID: -7888902146871769836
       vertices: []
       indices: 
       edges: []
@@ -136,7 +123,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6ca545d82e5f9a845be535720bb970c8
     internalID: 0
     vertices: []
     indices: 
@@ -144,7 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Hair3_0: 3856814172139256800
+      Dave_0: -7888902146871769836
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
