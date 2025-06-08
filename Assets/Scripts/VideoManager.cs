@@ -9,6 +9,11 @@ public class VideoManager : MonoBehaviour
     public VideoPlayer videoPlayer;
     private double pauseTime = 0;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        videoPlayer.Pause();
+    }
     void Start()
     {
         Debug.Log("Player starting");

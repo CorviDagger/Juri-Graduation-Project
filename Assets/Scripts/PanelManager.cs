@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 
 public class PanelManager : MonoBehaviour
 {
@@ -99,6 +100,15 @@ public class PanelManager : MonoBehaviour
 
     private HashSet<string> givenRewards = new HashSet<string>();
     public List<RewardEntry> rewardEntries;
+    public GameObject[] toHide;
+
+    public Image firstPlaceTrophy;
+    public Image secondPlaceTrophy;
+    public Image thirdPlaceTrophy;
+
+    public TMP_Text firstPlaceText;
+    public TMP_Text secondPlaceText;
+    public TMP_Text thirdPlaceText;
 
     void Start()
     {
@@ -237,12 +247,15 @@ public class PanelManager : MonoBehaviour
     {
         characterPanel.SetActive(true);
         UpdateStatsText();
+        HideButtons();
+        UpdateTopArtist();
     }
 
     public void CloseCharacterPanel()
     {
         characterPanel.SetActive(false);
         inventoryPanel.SetActive(false);
+        UnhideButtons();
     }
 
     private void UpdateStatsText()
@@ -268,8 +281,24 @@ public class PanelManager : MonoBehaviour
         notificationSprite.SetActive(true);
     }
 
+    public void HideButtons()
+    {
+        foreach (GameObject hide in toHide)
+        {
+            hide.SetActive(false);
+        }
+    }
+
+    public void UnhideButtons()
+    {
+        foreach (GameObject unhide in toHide)
+        {
+            unhide.SetActive(true);
+        }
+    }
 
 
+    
 
     public void OpenInventory()
     {
@@ -284,6 +313,39 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    private void UpdateTopArtist()
+    {
+        var topArtists = artistViewTimes.OrderByDescending(kvp => kvp.Value).Take(3).ToList();
+
+        if (topArtists.Count > 0)
+        {
+            firstPlaceText.text = $"{topArtists[0].Key} Viewing Time: {(topArtists[0].Value / 60f):F0} minute(s) and {(topArtists[0].Value):F1} seconds";
+        }
+        else
+        {
+            firstPlaceText.text = "-";
+        }
+
+        if (topArtists.Count > 1)
+        {
+            secondPlaceText.text = $"{topArtists[1].Key} Viewing Time: {(topArtists[1].Value / 60f):F0} minute(s) and {(topArtists[1].Value):F1} seconds";
+        }
+        else
+        {
+            secondPlaceText.text = "-";
+        }
+        if (topArtists.Count > 2)
+        {
+            thirdPlaceText.text = $"{topArtists[2].Key} Viewing Time: {(topArtists[2].Value / 60f):F0} minute(s) and {(topArtists[2].Value):F1} seconds" ;
+        }
+        else
+        {
+            thirdPlaceText.text = "-";
+        }
+
+
+    }
+
     [System.Serializable]
     public class RewardEntry
     {
@@ -296,7 +358,6 @@ public class PanelManager : MonoBehaviour
         public string artistName;
     }
     
-
 
 
 }
