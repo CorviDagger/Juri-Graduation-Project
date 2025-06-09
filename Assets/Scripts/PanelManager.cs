@@ -5,6 +5,10 @@ using TMPro;
 using UnityEngine.UI;
 using System.Linq;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class PanelManager : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -311,6 +315,15 @@ public class PanelManager : MonoBehaviour
             inventoryPanel.SetActive(true);
             notificationSprite.SetActive(false);
         }
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 
     private void UpdateTopArtist()

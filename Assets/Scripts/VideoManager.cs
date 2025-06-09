@@ -12,7 +12,7 @@ public class VideoManager : MonoBehaviour
 
     private void Awake()
     {
-        videoPlayer.Pause();
+        //videoPlayer.Pause();
     }
     void Start()
     {
