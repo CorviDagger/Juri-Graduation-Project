@@ -21,6 +21,7 @@ public class InventoryManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    //Adds an item to the inventory
     public void UnlockItem(string itemName)
     {
         if (!unlockedItems.Contains(itemName))
@@ -28,8 +29,7 @@ public class InventoryManager : MonoBehaviour
             unlockedItems.Add(itemName);
             Sprite itemIcon = GetIconForItem(itemName);
             inventoryItems.Add(new InventoryItem(itemName, itemIcon));
-            Debug.Log($"Unlocked new item: {itemName}");
-            //TODO UI stuff
+            Debug.Log($"Unlocked item: {itemName}");
         }
         if(characterCreator != null)
         {
@@ -42,6 +42,7 @@ public class InventoryManager : MonoBehaviour
         return unlockedItems.Contains(itemName);
     }
 
+    //Finds correct sprite for the item
     private Sprite GetIconForItem(string itemName)
     {
         foreach (var entry in itemSprites)
@@ -52,7 +53,7 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 
-
+    //This is now useless :)
     [System.Serializable]
     public class InventoryItem
     {
@@ -64,8 +65,9 @@ public class InventoryManager : MonoBehaviour
             itemName = name;
             this.icon = icon;
         }
-
     }
+
+    //This is where you make the items in the editor
     [System.Serializable]
     public class ItemSpriteEntry
     {

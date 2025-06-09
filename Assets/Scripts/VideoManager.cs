@@ -14,12 +14,17 @@ public class VideoManager : MonoBehaviour
     {
         //videoPlayer.Pause();
     }
+    //Make sure the video is paused in the beginning
+    //(there were some issues where it would play even though play on awake was checked off, this fixed it)
     void Start()
     {
         Debug.Log("Player starting");
         videoPlayer.Pause();
     }
 
+
+    //These are now useless since the video players are not being enabled and disabled anymore
+    //to be able to continue the video from where the panel that includes them is paused
     private void OnEnable()
     {
         pauseTime = videoPlayer.time;

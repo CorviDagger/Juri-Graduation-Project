@@ -35,6 +35,7 @@ public class PanelManager : MonoBehaviour
 
         public PanelManager panelManager;
 
+        //Makes OnVideoFinished usable
         public void Initialize()
         {
             if (videoPlayer != null)
@@ -43,6 +44,7 @@ public class PanelManager : MonoBehaviour
             }
         }
 
+        //Updates how often a video/a video of na artist has been viewed to the end
         private void OnVideoFinished(UnityEngine.Video.VideoPlayer vp)
         {
             timesWatched++;
@@ -50,6 +52,7 @@ public class PanelManager : MonoBehaviour
             panelManager.IncrementArtistViewCount(artistName);
         }
 
+        //Old function that is currently not used. Checks Rewards pased on panel, could be interesting for the future if rewards specific to videos need to be implemented
         public void CheckRewards(Dictionary<string, float> artistViewTimes)
         {
             foreach (var reward in rewardEntries)
@@ -124,7 +127,7 @@ public class PanelManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    //Counts time and calls the function that checks for rewards
     private void Update()
     {
         foreach (var entry in panels)
@@ -142,8 +145,10 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    //Checks whether rewards should be granted or not, then grants them
     public void CheckArtistRewards(string artistName)
     {
+        //cycle through rewards and makes sure only rewards for correct artist and no duplicates are received
         foreach(var reward in rewardEntries)
         {
             if(reward.artistName != artistName)
@@ -156,6 +161,7 @@ public class PanelManager : MonoBehaviour
                 continue;
             }
             bool rewardGranted = false;
+            //Checks if conditions for reward are met and then grants reward
             if(reward.type == RewardEntry.RewardType.Time && artistViewTimes.TryGetValue(artistName, out float time) && time >= reward.thresholdTime)
             {
                 rewardGranted = true;
@@ -174,6 +180,7 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    //Counts artists views
     public void IncrementArtistViewCount(string artistName)
     {
         if (artistViewCounts.ContainsKey(artistName))
@@ -186,6 +193,7 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    //Is used to show video panels. Also unpauses video player and enables video visibility.
     public void ShowPanel(string name)
     {
         foreach( var entry in panels)
@@ -204,6 +212,7 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    //Is used to close the video panels
     public void CloseAllPanels()
     {
         foreach (var entry in panels)
@@ -218,6 +227,7 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    //Gets view time for a panel entry. Currently not in use but could be interesting for future use cases
     public float GetViewTime(string panelName)
     {
         if(panelDict.TryGetValue(panelName, out var entry))
@@ -227,6 +237,7 @@ public class PanelManager : MonoBehaviour
         return 0f;
     }
 
+    //Gets the time of how long an artist ha been viewed
     public float GetArtistViewTime(string artistName)
     {
         if(artistViewTimes.TryGetValue(artistName, out float time))
@@ -236,6 +247,7 @@ public class PanelManager : MonoBehaviour
         return 0f;
     }
 
+    //Functions for buttons to open and close panels.
     public void ShowStatsPanel()
     {
         statsPanel.SetActive(true);
@@ -262,6 +274,7 @@ public class PanelManager : MonoBehaviour
         UnhideButtons();
     }
 
+    //Was used in an earlier version to display the view time and count, is now useless
     private void UpdateStatsText()
     {
         statsText.text = "";
@@ -280,11 +293,14 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    //Enables notification sprite, gets called when a new item is unlocked
     public void EnableNotification()
     {
         notificationSprite.SetActive(true);
     }
 
+
+    //Hides certain UI features
     public void HideButtons()
     {
         foreach (GameObject hide in toHide)
@@ -303,7 +319,7 @@ public class PanelManager : MonoBehaviour
 
 
     
-
+    //Button that opens inventory. Also deactivates the notification icon.
     public void OpenInventory()
     {
         if (inventoryPanel.activeSelf)
@@ -317,6 +333,7 @@ public class PanelManager : MonoBehaviour
         }
     }
 
+    //Quit Button
     public void QuitGame()
     {
 #if UNITY_EDITOR
@@ -326,6 +343,8 @@ public class PanelManager : MonoBehaviour
 #endif
     }
 
+
+    //Orders list of artist view times and then writes text for the Trophy rack
     private void UpdateTopArtist()
     {
         var topArtists = artistViewTimes.OrderByDescending(kvp => kvp.Value).Take(3).ToList();
@@ -359,6 +378,7 @@ public class PanelManager : MonoBehaviour
 
     }
 
+    //Allows me to edit the rewards in Editor 
     [System.Serializable]
     public class RewardEntry
     {

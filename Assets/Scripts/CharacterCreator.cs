@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterCreator : MonoBehaviour
 {
+    //Character Body parts and Sprites can be added in the Editor
     [Header("Character Customization")]
     public SpriteRenderer bodyPart;
     public List<Sprite> options = new List<Sprite>();
@@ -14,7 +15,7 @@ public class CharacterCreator : MonoBehaviour
     public List<InventoryManager.InventoryItem> ownedItems = new List<InventoryManager.InventoryItem>();
     private int currentItem = 0;
 
-
+    //Function to put on button, selects next Sprite for the corresponding bodypart
     public void NextOption()
     {
         currentOption++;
@@ -25,6 +26,7 @@ public class CharacterCreator : MonoBehaviour
         bodyPart.sprite = options[currentOption];
     }
 
+    //Function to put on button, selects next item to be displayed next to users Avatar
     public void NextDisplayItem()
     {
         if(ownedItems.Count == 0)
@@ -36,6 +38,8 @@ public class CharacterCreator : MonoBehaviour
         UpdateDisplayItem();
     }
 
+    //Sets up the list of items used for the item selection logic using the inventory
+    //Also sets up option for no item to be selected
     public void SetInventoryItem(List<InventoryManager.InventoryItem> itemSprites)
     {
         ownedItems = new List<InventoryManager.InventoryItem>();
@@ -50,6 +54,7 @@ public class CharacterCreator : MonoBehaviour
         SetInventoryItem(InventoryManager.Instance.inventoryItems);
     }
 
+    //Updates the Sprite of the item to the item selected by the button
     private void UpdateDisplayItem()
     {
         if (ownedItems.Count == 0)
