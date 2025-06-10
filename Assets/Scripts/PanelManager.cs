@@ -44,7 +44,7 @@ public class PanelManager : MonoBehaviour
             }
         }
 
-        //Updates how often a video/a video of na artist has been viewed to the end
+        //Updates how often a video/a video of an artist has been viewed to the end
         private void OnVideoFinished(UnityEngine.Video.VideoPlayer vp)
         {
             timesWatched++;

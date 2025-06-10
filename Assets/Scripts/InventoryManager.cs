@@ -53,7 +53,7 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 
-    //This is now useless :)
+    //This is used by the Inventory UI
     [System.Serializable]
     public class InventoryItem
     {
