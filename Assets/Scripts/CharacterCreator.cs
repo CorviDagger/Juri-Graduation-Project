@@ -65,4 +65,18 @@ public class CharacterCreator : MonoBehaviour
             displayItemSlot.sprite = ownedItems[currentItem].icon;
     }
 
+    public void SelectItem(InventoryManager.InventoryItem item)
+    {
+        if (item.icon == null)
+        {
+            displayItemSlot.sprite = null;
+            currentItem = 0;
+        }
+        else
+        {
+            displayItemSlot.sprite = item.icon;
+            currentItem = ownedItems.IndexOf(item);
+        }
+    }
+
 }
